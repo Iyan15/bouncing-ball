@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	 <canvas id="myCanvas" width="1200" height="500" style="border: #000 solid 1pt"></canvas>
+</body>
+</html>
+
+<script type="text/javascript">
+  window.addEventListener('load',drawCanvas,false);
+  var x, y, timer;
+ // var radius = 20;
+ // var dx = 5;
+ // var dy = 5;
+  var canvas = document.getElementById('myCanvas');
+  var context = canvas.getContext('2d');
+  var counter = 0;
+  var arrayball = [];
+  
+  function drawCanvas()
+  {
+   context.fillStyle = '#FFF';
+   context.fillRect(0,0,canvas.width,canvas.height);
+   //context.strokeStyle = '#000000';
+   //context.strokeRect(1,1,canvas.width, canvas.height);
+  }
+
+  function loop(){
+    timer = window.setTimeout(loop,10);
+
+    for(var i = 0; i <= arrayball.length; i++){
+      arrayball[i].drawBall();
+    }
+  }
+
+  function pushBall(){
+    arrayball.push(counter);
+    arrayball[counter] = new ball(x,y);
+
+    //arrayball[counter].getPosition(event);
+
+    counter++;
+    //var t = new Bounce();
+  }
+
+  function getPosition(event){
+    if(event.x != undefined && event.y != undefined){
+      x = event.x;
+      y = event.y;
+    }else{
+      x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+      y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+  }
+
+  var ball = function(x,y){
+    this.x = x;
+    this.y = y;
+    this.prevX = 0;
+    this.prevY = 0;
+    this.radius = 20;
+    this.dx = 5;
+    this.dy = 5;
+    this.drawBall = function(){
+       context.clearRect(this.prevX - this.radius, this.prevY - this.radius, this.radius * 2, this.radius * 2);
+    context.fillStyle = "#0000ff";
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius,0,Math.PI*2,true);
+    context.closePath();
+    context.fill(); 
+
+    this.prevX = this.x;
+    this.prevY = this.y;
+   if(this.x <= 20 || this.x >= 1180){ this.dx = -this.dx; }
+   if(this.y <= 20 || this.y >= 480){ this.dy = -this.dy; }
+   this.x += this.dx;
+   this.y += this.dy; 
+    };
+    
+  }
+
+  canvas.addEventListener('click', function(event){
+    getPosition(event);
+    pushBall();
+    window.clearTimeout(timer);
+    loop();
+    //console.log(counter);
+    
+  }, false);
+
+</script>
