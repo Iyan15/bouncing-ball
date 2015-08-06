@@ -67,6 +67,7 @@
     this.radius = 20;
     this.dx = 5;
     this.dy = 5;
+    this.direct = Math.floor((Math.random() * 10) + 1);
     this.drawBall = function(){
        context.clearRect(this.prevX - this.radius, this.prevY - this.radius, this.radius * 2, this.radius * 2);
     context.fillStyle = "#0000ff";
@@ -79,8 +80,22 @@
     this.prevY = this.y;
    if(this.x <= 20 || this.x >= 1180){ this.dx = -this.dx; }
    if(this.y <= 20 || this.y >= 480){ this.dy = -this.dy; }
-   this.x += this.dx;
-   this.y += this.dy; 
+   
+   if(this.direct % 4 == 0){
+    this.x += this.dx;
+   this.y += this.dy;
+   }else if(this.direct % 3 == 0){
+    this.x += -this.dx;
+   this.y += this.dy;
+   }else if(this.direct % 5 == 0){
+    this.x += this.dx;
+   this.y += -this.dy;
+   }else{
+    this.x += -this.dx;
+   this.y += -this.dy;
+   }
+   //this.x += this.dx;
+   //this.y += this.dy; 
     };
     
   }
